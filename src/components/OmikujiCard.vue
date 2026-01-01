@@ -10,9 +10,18 @@
   const userName = ref("");
   const cardRef = ref(null);
 
+  const getJSTDateString = () => {
+    return new Date().toLocaleDateString("ja-JP", {
+      timeZone: "Asia/Tokyo",
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+    });
+  };
+
   onMounted(() => {
     const savedDataJSON = localStorage.getItem(APP_CONFIG.storageKey);
-    const today = new Date().toLocaleDateString();
+    const today = getJSTDateString();
 
     if (savedDataJSON) {
       const savedData = JSON.parse(savedDataJSON);
@@ -35,7 +44,7 @@
     setTimeout(() => {
       const randomIndex = Math.floor(Math.random() * omikujiData.length);
       const selected = omikujiData[randomIndex];
-      const today = new Date().toLocaleDateString();
+      const today = getJSTDateString();
 
       result.value = selected;
       hasDrawn.value = true;
@@ -95,7 +104,7 @@
       <div v-else class="result-wrapper" key="result">
         <div class="omikuji-paper" ref="cardRef">
           <h2 class="paper-header">
-            今日の{{ userName ? userName : "" }}の運勢は…
+            今日の{{ userName ? userName + "の" : "" }}運勢は…
           </h2>
 
           <div class="paper-top">
@@ -116,7 +125,7 @@
             画像を保存
           </button>
           <button @click="shareOnTwitter" class="action-btn tweet-btn">
-            Xでポスト
+            ツイートする
           </button>
         </div>
       </div>
